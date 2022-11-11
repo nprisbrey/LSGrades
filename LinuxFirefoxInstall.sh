@@ -2,15 +2,33 @@
 
 # Check that Python 3 is installed
 if [ $(command -v python3) ]; then
-	echo "Python 3 is installed."
+	echo "python3 is installed."
 else
-	echo "Python 3 not installed. Now attempting to install..."
+	echo "python3 not installed. Now attempting to install..."
 	{ #Try
-		sudo apt-get update &&
-		sudo apt-get install python3 -y &&
-		echo "Python 3 installed successfully."
+		sudo apt update &&
+		sudo apt install python3 -y &&
+		echo "python3 installed successfully."
 	} || { #Catch
-		echo "Couldn't install Python 3 automatically. Please install and then run this script again." &&
+		echo "Couldn't install python3 automatically. Please install and then run this script again." &&
 		exit
 	}
 fi
+
+# Check that pip is installed
+if [ $(command -v pip) ]; then
+	echo "pip is installed."
+else
+	echo "pip not installed. Now attempting to install..."
+	{ #Try
+		sudo apt update &&
+		sudo apt install python3-pip -y &&
+		echo "pip installed successfully."
+	} || { #Catch
+		echo "Couldn't install pip automatically. Please install and then run this script again." &&
+		exit
+	}
+fi
+
+# Install Python dependencies
+pip install -r requirements.txt
