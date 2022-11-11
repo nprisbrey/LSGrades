@@ -1,5 +1,11 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.common.by import By
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from time import sleep
 from math import floor, ceil
 from tqdm import tqdm
@@ -138,8 +144,25 @@ else:
 	else:
 		print("No worries! Continuing on...")
 
+# Figure out what browser the user wants to use and initialize the "browser" variable appropriately
+browser = None
+while browser == None:
+	print("What browser would you like to use?")
+	typeBrowser = input("[F]irefox,[E]dge,[C]hrome: ")
 
-browser = webdriver.Firefox()
+	if len(typeBrowser) < 1:
+		print("Nothing is not a browser.")
+	else:
+		match typeBrowser.lower()[0]:
+			case "f":
+				browser = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+			case "e":
+				browser = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+			case "c":
+				browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+			case _:
+				print("Please enter a 'f', 'e', or 'c'.")
+
 browser.get("https://learningsuite.byu.edu")
 
 # If we have cached credentials
