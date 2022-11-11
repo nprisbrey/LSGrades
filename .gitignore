@@ -1,2 +1,3 @@
 # Ignore cached credentials
 *.gcreds
+*.log
